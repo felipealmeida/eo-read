@@ -1,0 +1,15 @@
+
+project eo-read ;
+
+exe eo-read : src/main.cpp
+ /boost//program_options
+ /boost//wave
+ /boost//system
+ /boost//filesystem
+ /boost//thread
+ : <threading>multi
+ ;
+explicit eo-read ;
+
+install stage : eo-read : <link>static ;
+explicit stage ;
