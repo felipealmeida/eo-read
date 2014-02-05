@@ -15,7 +15,7 @@ void show_help(
 {
   out_
     << "Usage:\n"
-    << "  eo-read <options> [-- <extra Clang options>]\n"
+    << "  eo-read <options>\n"
     << "\n"
     << desc_ << std::endl;
 }
@@ -169,12 +169,11 @@ struct hooks : boost::wave::context_policies::eat_whitespace<T>
 
 }
 
-int main(int argc_, const char* argv_[])
+int main(int argc, const char* argv[])
 {
   std::string filename;
   std::vector<std::string> include_path;
   std::vector<std::string> macros;
-  std::vector<std::string> extra_clang_args;
   {
   using boost::program_options::options_description;
   using boost::program_options::variables_map;
@@ -182,18 +181,6 @@ int main(int argc_, const char* argv_[])
   using boost::program_options::notify;
   using boost::program_options::parse_command_line;
   using boost::program_options::value;
-
-  const char** const
-    minus_minus = std::find(argv_, argv_ + argc_, std::string("--"));
-  if (minus_minus != argv_ + argc_)
-  {
-    extra_clang_args.insert(
-                            extra_clang_args.end(),
-                            minus_minus + 1,
-                            argv_ + argc_
-                            );
-  }
-  const int argc = minus_minus - argv_;
 
   options_description desc("Options");
   desc.add_options()
@@ -206,7 +193,7 @@ int main(int argc_, const char* argv_[])
   try
   {
     variables_map vm;
-    store(parse_command_line(argc, argv_, desc), vm);
+    store(parse_command_line(argc, argv, desc), vm);
     notify(vm);
 
     if (vm.count("help"))
